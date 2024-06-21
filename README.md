@@ -10,6 +10,17 @@ Enhance your Nx experience by installing [Nx Console](https://nx.dev/nx-console)
 provides an interactive UI to view your projects, run tasks, generate code, and more! Available for VSCode, IntelliJ and
 comes with a LSP for Vim users.
 
+## Start Electron Locally:
+Run `yarn nx serve expo` to start expo locally.
+Run `yarn nx serve electron` to start electron locally.
+
+## Package Electron:
+
+Run `yarn nx package-mac electron` to package for mac
+Run `yarn nx package-universal electron` to package for mac arm64 and intel.
+Run `yarn nx package-linux electron` to package for linux.
+Run `yarn nx package-windows electron` to package for windows.
+
 ## Start the application
 
 Run `npx nx serve expo` to start the development server. Happy coding!
