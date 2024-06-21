@@ -1,0 +1,85 @@
+{
+  "name": "electron",
+  "version": "0.0.0",
+  "private": true,
+  "author": "Pineapples Dev <solutions@pineapples.dev> (https://x.com/pineapplesdev)",
+  "description": "One app to rule them all",
+  "main": "./public/electron.js",
+  "homepage": "./",
+  "scripts": {
+    "build": "./build.sh",
+    "start": "electronmon .",
+    "start:all": "concurrently -k \"yarn nx serve expo\" \"wait-on http://localhost:8081 && electronmon .\""
+  },
+  "dependencies": {
+    "expo": "*",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-native": "0.74.1",
+    "react-native-web": "0.19.11"
+  },
+  "devDependencies": {
+    "concurrently": "6.2.1",
+    "electron": "31.0.2",
+    "electron-builder": "24.13.3",
+    "electronmon": "2.0.3",
+    "wait-on": "7.2.0"
+  },
+  "browserslist": {
+    "production": [
+      "last 1 electron version"
+    ],
+    "development": [
+      "last 1 electron version"
+    ]
+  },
+  "build": {
+    "appId": "dev.pineapples.electron",
+    "productName": "Electron",
+    "files": [
+      "build/**/*",
+      "apps/electron/build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "public"
+    },
+    "protocols": {
+      "name": "deeplink",
+      "schemes": [
+        "deeplink"
+      ]
+    },
+    "mac": {
+      "appId": "dev.pineapples.electron",
+      "bundleVersion": "4.1.1",
+      "bundleShortVersion": "poo",
+      "defaultArch": "universal",
+      "helperBundleId": "dev.pineapples.electron",
+      "category": "public.app-category.developer-tools",
+      "target": "mas",
+      "darkModeSupport": false,
+      "binaries": [],
+      "preAutoEntitlements": true,
+      "icon": "build/icon.icns",
+      "identity": "Pineapple Corporation (XXXXX12XX3)",
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.inherit.plist",
+      "provisioningProfile": "./mas/23eff4b8-7f5e-4329-a8db-c5111c7c245b.provisionprofile",
+      "mergeASARs": false,
+      "hardenedRuntime": true,
+      "gatekeeperAssess": true,
+      "extendInfo": {
+        "ElectronTeamID": "XXXXX12XX3",
+        "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access your camera for QR code scanning and interacting with NFTs in augmented reality!"
+      }
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "deb",
+      "category": "Development"
+    }
+  }
+}
