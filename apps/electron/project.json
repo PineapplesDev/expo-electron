@@ -1,0 +1,115 @@
+{
+  "name": "electron",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/electron/src",
+  "projectType": "application",
+  "targets": {
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "electronmon .",
+        "cwd": "./apps/electron"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "./build.sh",
+        "cwd": "./apps/electron"
+      }
+    },
+    "start": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "start",
+        "cwd": "./apps/electron"
+      },
+      "dependsOn": [
+        {
+          "target": "build"
+        }
+      ]
+    },
+    "package-windows": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "electron-builder -w -c.extraMetadata.main=build/electron.js",
+        "cwd": "./apps/electron"
+      }
+    },
+    "package-linux": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "electron-builder -l -c.extraMetadata.main=build/electron.js",
+        "cwd": "./apps/electron"
+      },
+      "dependsOn": [
+        {
+          "target": "build"
+        }
+      ]
+    },
+    "package-mac": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "electron-builder -m -c.extraMetadata.main=build/electron.js",
+        "cwd": "./apps/electron"
+      },
+      "dependsOn": [
+        {
+          "target": "build"
+        }
+      ]
+    },
+    "package-mac-universal": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "electron-builder --universal -c.extraMetadata.main=build/electron.js",
+        "cwd": "./apps/electron"
+      },
+      "dependsOn": [
+        {
+          "target": "build"
+        }
+      ]
+    },
+    "extract-build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx @electron/asar extract ./apps/electron/dist/mas-arm64/Electron.app/Contents/Resources/app.asar ./apps/electron/dist/mas-arm64/extracted"
+      }
+    },
+    "codesign-mac": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "codesign -vfs --deep \"Apple Distribution: Pineapple Corporation (XXXXX12XX3)\" ./dist/mas-arm64/Electron.app",
+        "cwd": "./apps/electron",
+        "parallel": false
+      }
+    },
+    "productbuild-mac": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "xcrun productbuild --component ./dist/mas-arm64/Electron.app /Applications/ ./dist/mas-arm64/Electron.unsigned.pkg",
+        "cwd": "./apps/electron",
+        "parallel": false
+      }
+    },
+    "productsign-mac": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "xcrun productsign --sign \"3rd Party Mac Developer Installer: Pineapple Corporation (XXXXX12XX3)\" ./dist/mas-arm64/Electron.unsigned.pkg ./dist/mas-arm64/Electron.pkg",
+        "cwd": "./apps/electron",
+        "parallel": false
+      }
+    },
+    "upload-mac": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "xcrun altool --upload-app --type macos -f ./apps/electron/dist/mas/Electron-0.0.0-universal.pkg --apiKey KMP3KDGXKG --apiIssuer d6236c43-3fbe-455c-af0d-7bfeba00fd27",
+        "cwd": "./",
+        "parallel": false
+      }
+    }
+  }
+}
